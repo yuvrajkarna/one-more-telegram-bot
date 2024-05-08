@@ -6,7 +6,7 @@
 require('dotenv').config();
 
 const TOKEN = process.env.TELEGRAM_TOKEN || 'YOUR_TELEGRAM_BOT_TOKEN';
-const url = 'https://one-more-telegram-bot.vercel.app/';
+const url = 'https://one-more-telegram-bot.vercel.app';
 const port = process.env.PORT;
 
 const TelegramBot = require('node-telegram-bot-api');
@@ -27,6 +27,10 @@ app.use(express.json());
 app.post(`/bot${TOKEN}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
+});
+
+app.get("/", (req, res) => {
+  res.send("Bot is on from server..")
 });
 
 
