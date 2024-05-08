@@ -7,7 +7,7 @@ app.get("/", (req, res) => {
     res.send("Bot is alive");
 });
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
@@ -22,7 +22,7 @@ bot.on("message", async (msg) => {
     const userInput = msg.text;
     const msg_id = msg.message_id;
 
-    sent_message = await bot.sendMessage(chatId, userInput, {
+    await bot.sendMessage(chatId, userInput, {
         reply_to_message_id: msg_id,
     });
 
