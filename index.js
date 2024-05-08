@@ -6,10 +6,10 @@
 require('dotenv').config();
 
 const TOKEN = process.env.TELEGRAM_TOKEN || 'YOUR_TELEGRAM_BOT_TOKEN';
-const url = 'https://<PUBLIC-URL>';
+const url = 'https://one-more-telegram-bot.vercel.app/';
 const port = process.env.PORT;
 
-const TelegramBot = require('../..');
+const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 
 // No need to pass any parameters as we will handle the updates with Express
@@ -29,12 +29,28 @@ app.post(`/bot${TOKEN}`, (req, res) => {
   res.sendStatus(200);
 });
 
-// Start Express Server
-app.listen(port, () => {
-  console.log(`Express server is listening on ${port}`);
-});
+
+// Matches "/echo [whatever]"
+bot.onText(/\/echo (.+)/, (msg, match) => {
+    // 'msg' is the received Message from Telegram
+    // 'match' is the result of executing the regexp above on the text content
+    // of the message
+    console.log("Hello from /somethings");
+  
+    const chatId = msg.chat.id;
+    const resp = match[1]; // the captured "whatever"
+  
+    // send back the matched "whatever" to the chat
+    bot.sendMessage(chatId, resp);
+  });
 
 // Just to ping!
 bot.on('message', msg => {
   bot.sendMessage(msg.chat.id, 'I am alive!');
+});
+
+
+// Start Express Server
+app.listen(port, () => {
+  console.log(`Express server is listening on ${port}`);
 });
